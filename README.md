@@ -1,8 +1,12 @@
 # Inline PHP-Editor
 
-**Kurzbeschreibung:**  
-Ein leichtgewichtiger, passwortgeschützter Inline-Editor für PHP-Seiten.  
-Erlaubt das direkte Bearbeiten von bestimmten `<div class="edit">`-Blöcken im Browser und speichert Änderungen per AJAX direkt in die Quell-PHP.
+**Einfacher, leichtgewichtiger Inline-Editor für PHP-Seiten:**  Dieser Editor erlaubt es, einzelne `<div class="edit">`-Blöcke direkt im Browser zu bearbeiten und die Änderungen per AJAX in die zugrunde liegende PHP-Datei zu schreiben. Er kommt dabei ohne jegliche externen Abhängigkeiten aus:  
+
+- **Kein Framework** (kein jQuery, kein Bootstrap o. Ä.)  
+- **Keine zusätzlichen PHP-Pakete** (nur Standard-PHP-Session und Dateizugriff)  
+- **Nur Vanilla-JavaScript und CSS**  
+
+Dadurch lässt er sich in jedes beliebige PHP-Projekt integrieren, ohne dass zusätzliche Bibliotheken oder Paketmanager (Composer/NPM) benötigt werden.  
 
 ## Dateien und Ordner
 test.php         - Beispielseite, die den Editor einbindet.
@@ -18,6 +22,7 @@ inc/edit.js      - Frontend-Logik: Icons, Login, Edit-Modus, AJAX-Aufrufe.
 ## Installation
 
 1. Verzeichnisstruktur beibehalten oder anpassen:
+
 `
 /dein-webroot/
   ├── test.php
@@ -33,26 +38,29 @@ inc/edit.js      - Frontend-Logik: Icons, Login, Edit-Modus, AJAX-Aufrufe.
 
 **Passwort festlegen**  
 * In `inc/edit.php` findest du ganz oben folgenden Abschnitt:
-     ```php
-     $password = 'Geheimes Passwort!';
-     ```
-     Ändere den Wert in dein gewünschtes Passwort.
+
+  ```php
+  $password = 'Geheimes Passwort!';
+  ```
+  Ändere den Wert in dein gewünschtes Passwort.
 
 **Bearbeitbare PHP‐Dateien vorbereiten**  
 - Jeder `<div class="edit">`‐Block muss eine **eindeutige `id="uniqueID"`** haben.  
-     - Unmittelbar nach jedem bearbeitbaren Div muss ein Kommentar `<!-- /uniqueID -->` stehen.  
-       Dadurch erkennt das Backend, wo der Block endet.  
-     - Beispiel:
-       ```html
-       <div id="block1" class="edit">
-         <!-- hier steht der Inhalt, den man im Browser direkt ändern kann -->
-       </div>
-       <!-- /block1 -->
-       ```
+
+  Unmittelbar nach jedem bearbeitbaren Div muss ein Kommentar `<!-- /uniqueID -->` stehen.  
+  Dadurch erkennt das Backend, wo der Block endet. Beispiel:
+  
+  ```html
+  <div id="block1" class="edit">
+    <!-- hier steht der Inhalt, den man im Browser direkt ändern kann -->
+  </div>
+  <!-- /block1 -->
+  ```
+  
 ## Nutzung
 
 1. **Seite im Browser öffnen**  
-   Rufe z. B. `http://dein-server/test.php` auf.
+   - Rufe z. B. `http://dein-server/test.php` auf.
 
 2. **Edit-Icon anklicken (✏️)**  
    - Wenn du noch nicht eingeloggt bist, erscheint ein Login‐Modal.
@@ -77,12 +85,13 @@ inc/edit.js      - Frontend-Logik: Icons, Login, Edit-Modus, AJAX-Aufrufe.
 
 ## Troubleshooting
 
-### 1. Datei wird nach dem Speichern leer
+### Datei wird nach dem Speichern leer
 - **Ursache:** Regex konnte die Markierung nicht finden (fehlende oder falsche ID/comment-Syntax).  
 - **Abhilfe:**  
   - Überprüfe, dass **ID** und **Kommentar** exakt übereinstimmen.  
   - Achte auf Groß/​Kleinschreibung, Leerzeichen und Zeilenumbrüche.  
   - Beispiel:
+  
     ```html
     <div id="meinBlock" class="edit">
       …Inhalt…
@@ -90,11 +99,13 @@ inc/edit.js      - Frontend-Logik: Icons, Login, Edit-Modus, AJAX-Aufrufe.
     <!-- /meinBlock -->
     ```
 
-### 2. `missingIds` listet alle Blöcke auf
+### `missingIds` listet alle Blöcke auf
 - **Ursache:** Backend-Regex sucht nach 
+
   ```regex
   <div … id="ID" … class="…edit…" …> … </div>\s*<!-- /ID -->
-  
+  ```
+
 # Kontakt und Lizenz
 
 Copyright (c) 2025 netzmal GmbH
