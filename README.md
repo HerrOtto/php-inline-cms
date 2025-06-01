@@ -21,41 +21,87 @@ inc/edit.js      - Frontend-Logik: Icons, Login, Edit-Modus, AJAX-Aufrufe.
 
 ## Installation
 
-1. Verzeichnisstruktur beibehalten oder anpassen:
+1. Inc-Ordner in den Webseiten-Ordner laden. Das Projekt sieht dann in etwa so aus:
 
-`
+```
 /dein-webroot/
-  ├── test.php
+  ├── index.php    ← PHP-Datei, die später bearbeitbar sein soll
   └── inc/
-      ├── edit.php
-      ├── edit.css
-      └── edit.js
-`
+      ├── edit.php ← Backend-Skript für Login/Save/Check
+      ├── edit.css ← CSS-Datei für den Edit-Modus und das Login-Modal
+      └── edit.js  ← JavaScript für Icons, Modal und AJAX-Aufrufe
+```
 
-2. Zugriffsrechte prüfen: edit.php muss Schreibzugriff auf die bearbeitete PHP-Datei haben.
+2. Stelle sicher, dass das Backend-Skript (`inc/edit.php`) Schreibrechte auf die bearbeitete PHP-Datei (z. B. `index.php`) hat.  
 
+3. **Konfiguration starten**
+   
 ## Konfiguration
 
 **Passwort festlegen**  
-* In `inc/edit.php` findest du ganz oben folgenden Abschnitt:
+In `inc/edit.php` findest du ganz oben folgenden Abschnitt:
 
-  ```php
-  $password = 'Geheimes Passwort!';
-  ```
-  Ändere den Wert in dein gewünschtes Passwort.
+```php
+$password = 'Geheimes Passwort!';
+```
+Ändere den Wert in dein gewünschtes Passwort.
 
 **Bearbeitbare PHP‐Dateien vorbereiten**  
-- Jeder `<div class="edit">`‐Block muss eine **eindeutige `id="uniqueID"`** haben.  
 
-  Unmittelbar nach jedem bearbeitbaren Div muss ein Kommentar `<!-- /uniqueID -->` stehen.  
-  Dadurch erkennt das Backend, wo der Block endet. Beispiel:
-  
-  ```html
-  <div id="block1" class="edit">
-    <!-- hier steht der Inhalt, den man im Browser direkt ändern kann -->
-  </div>
-  <!-- /block1 -->
-  ```
+a) Am Anfang der PHP-Dateien das "edit.php"-Script einbinden:
+
+````php
+include "inc/edit.php";
+````
+
+b) Im Head der PHP-Datei folgendes einbinden. Das CSS kann nach eigenen Wünschen angepasst werden:
+
+````html
+<head>
+
+    ...
+    <script src="inc/edit.js"></script>
+    <link   href="inc/edit.css" rel="stylesheet">
+    <style>
+        /* Standard: Icon bleibt an seiner Position im Flow */
+        #editIconHere {
+            display: inline-block;
+            position: static;
+            font-size: 20px;
+        }
+        /* Sobald body.editorActive gesetzt ist, fixiere das Icon unten rechts */
+        body.editorActive #editIconHere {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            margin: 0;
+            background-color: lightblue;
+            padding: 5px;
+            font-size: 20px;
+        }
+    </style>
+    ...
+
+</head>
+````
+
+c) Platziere am Ende des <body>-Tags (oder an einer Stelle deiner Wahl) den Container für die Edit-Icons:
+
+````html
+<div id="editIconHere"></div>
+````
+
+d) Jeder `<div class="edit">`‐Block muss eine **eindeutige `id="uniqueID"`** haben.  
+Unmittelbar nach jedem bearbeitbaren Div muss ein Kommentar `<!-- /uniqueID -->` stehen.  
+Dadurch erkennt das Backend, wo der Block endet. Beispiel:
+
+```html
+<div id="block1" class="edit">
+  <!-- hier steht der Inhalt, den man im Browser direkt ändern kann -->
+</div>
+<!-- /block1 -->
+```
   
 ## Nutzung
 
@@ -99,13 +145,13 @@ inc/edit.js      - Frontend-Logik: Icons, Login, Edit-Modus, AJAX-Aufrufe.
     <!-- /meinBlock -->
     ```
 
-### `missingIds` listet alle Blöcke auf
+### Beim Speichern wird auf fehlende IDs verwiesen
 - **Ursache:** Backend-Regex sucht nach 
 
   ```regex
   <div … id="ID" … class="…edit…" …> … </div>\s*<!-- /ID -->
   ```
 
-# Kontakt und Lizenz
+## Kontakt und Lizenz
 
 Copyright (c) 2025 netzmal GmbH
